@@ -34,6 +34,22 @@ import time
 
 #######################################################
 # Dealing with command line args
+<<<<<<< HEAD
+=======
+#######################################################
+opts, args = getopt.getopt(sys.argv[1:], shortopts='-t-p', longopts=['train', 'predict'])
+train = False
+predict = False
+for opt_name, opt_value in opts:
+    if opt_name in ('-t', '--train'):
+        train = True
+    elif opt_name in ('-p', '--predict'):
+        predict = True
+print(train, predict)
+
+#######################################################
+# Checking if GPU is used
+>>>>>>> 44dda492b4b9f11423cf8278f51c673acf8b219e
 #######################################################
 opts, args = getopt.getopt(sys.argv[1:], shortopts='-t-p', longopts=['train', 'predict'])
 train = False
@@ -153,6 +169,7 @@ if shuffle:
     np.random.shuffle(indices)
 
 train_idx, valid_idx = indices[split:], indices[:split]
+print(valid_idx)
 train_sampler = SubsetRandomSampler(train_idx)
 valid_sampler = SubsetRandomSampler(valid_idx)
 
@@ -262,6 +279,7 @@ for i in range(epoch):
 
     model_test.train()
     k = 1
+<<<<<<< HEAD
     for x, y in train_loader:
         x, y = x.to(device), y.to(device)
         # print('before: ', x.size(), y.size())
@@ -270,12 +288,26 @@ for i in range(epoch):
         # grid_img = torchvision.utils.make_grid(x)
         # writer1.add_image('images', grid_img, 0)
         # print('after: ', x.size(), y.size())
+=======
+    print(len(train_loader))
+    for x, y in train_loader:
+        x, y = x.to(device), y.to(device)
+        print('before: ', x.size(), y.size())
+        # If want to get the input images with their Augmentation - To check the data flowing in net
+        input_images(x, y, i, n_iter, k)
+        # grid_img = torchvision.utils.make_grid(x)
+        # writer1.add_image('images', grid_img, 0)
+        print('after: ', x.size(), y.size())
+>>>>>>> 44dda492b4b9f11423cf8278f51c673acf8b219e
         # grid_lab = torchvision.utils.make_grid(y)
 
         opt.zero_grad()
 
         y_pred = model_test(x)
+<<<<<<< HEAD
 
+=======
+>>>>>>> 44dda492b4b9f11423cf8278f51c673acf8b219e
         lossT = calc_loss(y_pred, y)  # Dice_loss Used
 
         train_loss += lossT.item() * x.size(0)
@@ -289,7 +321,11 @@ for i in range(epoch):
     #        name = name.replace('.', '/')
     #        writer1.add_histogram(name, param.data.cpu().numpy(), i + 1)
     #        writer1.add_histogram(name + '/grad', param.grad.data.cpu().numpy(), i + 1)
+<<<<<<< HEAD
     # print('epoch = {}, train finished'.format(i))
+=======
+    print('epoch = {}, train finished'.format(i))
+>>>>>>> 44dda492b4b9f11423cf8278f51c673acf8b219e
     #######################################################
     # Validation Step
     #######################################################
@@ -313,6 +349,7 @@ for i in range(epoch):
     im_tb = Image.open(test_image)
     im_label = Image.open(test_label)
     s_tb = data_transform(im_tb)
+    print(s_tb.unsqueeze(0).size())
     s_label = data_transform(im_label)
     s_label = s_label.detach().numpy()
 
@@ -561,3 +598,7 @@ print('Dice Score : ' + str(dice_score123 / len(read_test_folderP)))
 # print(x_count)
 # print(x_dice)
 # print('Dice Score : ' + str(float(x_dice/(len(read_test_folderP)-x_count))))
+<<<<<<< HEAD
+=======
+
+>>>>>>> 44dda492b4b9f11423cf8278f51c673acf8b219e
