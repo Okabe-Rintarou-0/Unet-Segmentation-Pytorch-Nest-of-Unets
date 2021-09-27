@@ -1,5 +1,6 @@
 import torch
-import torchvision
+from torch.utils.mobile_optimizer import optimize_for_mobile
+
 from Models import U_Net
 
 pthUrl = r'D:/Unet-Segmentation-Pytorch-Nest-of-Unets/model/Unet_D_15_4/Unet_epoch_15_batchsize_4.pth'
