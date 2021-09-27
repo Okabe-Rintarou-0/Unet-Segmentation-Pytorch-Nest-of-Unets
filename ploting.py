@@ -36,14 +36,14 @@ def show_training_dataset(training_dataset):
         plt.tight_layout()
         ax.set_title('Sample #{}'.format(i))
         ax.axis('off')
-        show_images(sample['images'],sample['labels'])
+        show_images(sample['images'], sample['labels'])
 
         if i == 3:
             plt.show()
             break
 
-class VisdomLinePlotter(object):
 
+class VisdomLinePlotter(object):
     """Plots to Visdom"""
 
     def __init__(self, env_name='main'):
@@ -53,17 +53,18 @@ class VisdomLinePlotter(object):
 
     def plot(self, var_name, split_name, title_name, x, y):
         if var_name not in self.plots:
-            self.plots[var_name] = self.viz.line(X=np.array([x,x]), Y=np.array([y,y]), env=self.env, opts=dict(
+            self.plots[var_name] = self.viz.line(X=np.array([x, x]), Y=np.array([y, y]), env=self.env, opts=dict(
                 legend=[split_name],
                 title=title_name,
                 xlabel='Epochs',
                 ylabel=var_name
             ))
         else:
-            self.viz.line(X=np.array([x]), Y=np.array([y]), env=self.env, win=self.plots[var_name], name=split_name, update = 'append')
+            self.viz.line(X=np.array([x]), Y=np.array([y]), env=self.env, win=self.plots[var_name], name=split_name,
+                          update='append')
 
 
-def input_images(x, y, i, n_iter, k=1):
+def input_images(x, y, i, n_iter, id, k=1):
     """
 
     :param x: takes input image
@@ -98,11 +99,11 @@ def input_images(x, y, i, n_iter, k=1):
         ax1.set_xticklabels([])
         ax1.set_yticklabels([])
         plt.savefig(
-            './model/pred/L_' + str(n_iter-1) + '_epoch_'
+            './model/pred/' + str(id) + '/L_' + str(n_iter - 1) + '_epoch_'
             + str(i))
 
 
-def plot_kernels(tensor, n_iter, num_cols=5, cmap="gray"):
+def plot_kernels(id, tensor, n_iter, num_cols=5, cmap="gray"):
     """Plotting the kernals and layers
     Args:
         Tensor :Input layer,
@@ -144,7 +145,7 @@ def plot_kernels(tensor, n_iter, num_cols=5, cmap="gray"):
             break
 
     plt.savefig(
-        './model/pred/Kernal_' + str(n_iter - 1) + '_epoch_'
+        './model/pred/' + str(id) + '/Kernal_' + str(n_iter - 1) + '_epoch_'
         + str(i))
 
 
@@ -163,10 +164,9 @@ class LayerActivations():
         self.hook.remove()
 
 
-#to get gradient flow
-#From Pytorch-forums
-def plot_grad_flow(named_parameters,n_iter):
-
+# to get gradient flow
+# From Pytorch-forums
+def plot_grad_flow(named_parameters, n_iter):
     '''Plots the gradients flowing through different layers in the net during training.
     Can be used for checking for possible gradient vanishing / exploding problems.
 
@@ -193,4 +193,4 @@ def plot_grad_flow(named_parameters,n_iter):
     plt.legend([Line2D([0], [0], color="c", lw=4),
                 Line2D([0], [0], color="b", lw=4),
                 Line2D([0], [0], color="k", lw=4)], ['max-gradient', 'mean-gradient', 'zero-gradient'])
-    #plt.savefig('./model/pred/Grad_Flow_' + str(n_iter - 1))
+    # plt.savefig('./model/pred/Grad_Flow_' + str(n_iter - 1))
